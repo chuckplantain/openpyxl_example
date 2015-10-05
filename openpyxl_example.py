@@ -13,12 +13,13 @@ data_dict['foo'] = 'Kyle Petan'
 data_dict['bar'] = "Splendid and Great"
 
 # load a .xlxs file for practice
-wb = load_workbook('/Users/kyleblazepetan/Documents/simpleTest2.xlsx')
+wb = load_workbook('./simpleTest2.xlsx')
 
 
 # In[198]:
 
 # regex to find strings matching <<*>>
+# returns a 3-tuple, where we discard all but middle
 pattern = re.compile(r'(<<)(\w+)(>>)')
 
 
@@ -27,10 +28,10 @@ pattern = re.compile(r'(<<)(\w+)(>>)')
 # work sheet
 ws = wb.active
 
+# Excel Files report correct rows and columns but libre office does not. 
+# Something to lookinto
 # ws.calculate_dimension()
 # https://bitbucket.org/openpyxl/openpyxl/issues/278/get_highest_row-column-are-unreliable
-# ugh... 
-# fork up dough for excel? works with excel.
 
 # how many rows?
 rows = ws.get_highest_row()
@@ -46,10 +47,7 @@ def lookUpFunction(matchobj):
     if resp:
         return resp
     return 'key_not_found!!!!'
-    
-sample.value = re.sub(pattern, lookUpFunction, sample.value)
-print(sample.value)
-
+    # OR ADD KEY IN Real life???
 
 # In[201]:
 
@@ -59,10 +57,4 @@ for row in range(rows):
         if currentCell.value is not None:
             currentCell.value = re.sub(pattern, lookUpFunction, currentCell.value)
             
-wb.save('/Users/kyleblazepetan/tmp/sample.xlxs')
-
-
-# In[ ]:
-
-
-
+wb.save('./sample.xlxs')
