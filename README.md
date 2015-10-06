@@ -1,5 +1,8 @@
 # Using openpyxl to look at cells in an excel spreadsheet.
 
+!['before pic'](./before.png)
+!['after pic'](./after.png)
+
 One problem is that Libre Office spreadsheets fail to report row counts, and
 column counts...
 
