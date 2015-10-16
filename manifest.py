@@ -39,9 +39,10 @@ def verifyKeys(item, key):
     if key == 'date of birth' or key == 'issue date' or key == 'expiration date':
         val = item[key]
         if val is not None:
-            if not isinstance(val, datetime.date):
+            item[key] = datetime.datetime.strptime(val, "%m/%d/%Y")
+            if not isinstance(item[key], datetime.date):
                 return False, 'ERROR: dates should be in MM/DD/YYYY format please'
-            item[key] = item[key].date()    # convert datetime object MM/DD/YYYY/HH/MM/SS to date object MM/DD/YYYY
+
 
 
     if key == 'first name' or key == 'last name':
@@ -55,7 +56,7 @@ def verifyKeys(item, key):
             if not (isinstance(val, int)):
                 return False, 'ERROR: weight should be numerical'
 
-    if key == 'weight_unit':
+    if key == 'weight unit':
         val = item[key]
         if val is not None:
             if not isinstance(val, unicode) or not (val.lower() == u'lb' or val.lower() == u'kg'):
@@ -74,15 +75,22 @@ def process_manifest(manifest_file):
     ws = wb.active
     header = []
     data = []
-    k = 0
-    for i, row in enumerate(ws['D11':'N511']):
+    blankrow_count = 0
 
-        dataItem = {}
-        for j, cell in enumerate(row):
-            if (i <= 0):
+    for row in ws['B11':'L11']:
+        for cell in row:
+            if cell.value is not None:
                 header.append(cell.value.lower())
+
+    for row in ws['B12':'L512']:
+        dataItem = {}
+        for idx, cell in enumerate(row):
+            try:
+                key = header[idx]
+            except:
+                break
             else:
-                dataItem[header[j]] = cell.value
+                dataItem[key] = cell.value
         if not all(v is None for v in dataItem.values()):
             valid, saved_item = saveItem(dataItem, data)
             if not valid:
@@ -90,10 +98,7 @@ def process_manifest(manifest_file):
             else:
                 data.append(saved_item)
         else:
-            k = k + 1
-            if (k >= 10):
+            blankrow_count += 1
+            if (blankrow_count >= 10):
                 break
-    print data
     return True, data
-
-process_manifest('/Users/kyleblazepetan/Plumb/xlsxFiles/sampleFile.xlsx')

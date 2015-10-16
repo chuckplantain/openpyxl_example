@@ -1,5 +1,5 @@
 # Python 2.7
-## manifest.py -- 
+## manifest.py --
 Functions to fill dicts with information from spreadsheet's rows
 
 ## data_to_xlsx.py --
