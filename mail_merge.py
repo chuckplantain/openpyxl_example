@@ -11,6 +11,15 @@ def process_merge(data, flightSegmentData):
     wb = load_workbook('/Users/kyleblazepetan/Desktop/mailMergeTemplate.xlsx')
     ws = wb.active
 
+    def zipForm(segments):
+        pertinent_rows = ws['A32':'L54']
+        for templateRow, blankRow in zip(pertinent_rows, ws.iter_rows(row_offset=start_row)):
+            for template_cell, current_cell in zip(templateRow, blankRow):
+                copied_style = template_cell.style
+                current_cell.value = template_cell.value
+                current_cell.style = copied_style
+
+
     def buildForm(segments):
         pertinent_rows = ws['A32':'L54']
         start = 56
@@ -23,9 +32,12 @@ def process_merge(data, flightSegmentData):
                     current_cell.style = copied_style
                     start += 25
 
+    start_row = 33
     flightSegments = len(flightSegmentData)
-    if flightSegments > 1:
-        buildForm(flightSegments)
+    while flightSegments > 1:
+        start_row += 25
+        zipForm(flightSegments)
+        flightSegments -= 1
 
 #    def lookUpFunction(matchobj):
 #        resp = data[str(matchobj.group(2)).lower()]
