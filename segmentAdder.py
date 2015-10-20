@@ -1,13 +1,11 @@
 from openpyxl import load_workbook
-from itertools import *
 import re
 
 wb = load_workbook('/Users/kyleblazepetan/Desktop/mailMergeTemplate.xlsx')
 ws = wb.active
-pattern = re.compile(r'FLIGHT SEGMENT ')
 
-def segmentAdder(flightSegments):
-
+def segmentAdder(flightSegments, ws):
+    pattern = re.compile(r'FLIGHT SEGMENT ')
     passedin = len(flightSegments)
     segments = 55 + ( 23 * passedin )
     for index in xrange(55, segments, 23):
@@ -21,10 +19,7 @@ def segmentAdder(flightSegments):
                 if cell.value is not None:
                     val = cell.value
                     if pattern.search(val) is not None:
-                        print('real_good')
                         bl_cell.value = "Flight Segment " +  str(crazy_inner_count)
-                        print crazy_inner_count
-                        print 'foo'
                     else:
                         bl_cell.value = cell.value
                 else:
