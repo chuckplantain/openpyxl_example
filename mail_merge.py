@@ -6,11 +6,10 @@ def segmentAdder(flightSegments, wb):
     '''
     :param flightSegments: a list of dicts containing flight info (only need length of list)
     :param wb: the workbook we are working on
-    works with process merge. this function gets called first and adds columns if necessary
-    to a template xlsx file. then the data gets subsituted in.
-
-    TODO: replace the merge symbols with text or programattically fill in the values
-    for flight segments. It must be programmatically.
+    works with process merge. this function adds extra flight segment sections
+    if necessary to a template xlsx file.
+    TODO: programattically fill in the values
+    for flight segments. Not sure if you had any thoughts on this.
     '''
     ws = wb.active
     pattern = re.compile(r'FLIGHT SEGMENT ')
